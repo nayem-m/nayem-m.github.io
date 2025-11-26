@@ -117,54 +117,18 @@
     }
     
     /**
-     * Card Hover Effects with Glitch
+     * Card Hover Effects
      */
     function initCardEffects() {
         const cards = document.querySelectorAll('.nav-card, .card');
         
         cards.forEach(card => {
-            // Add data-text attribute for glitch effect
-            const title = card.querySelector('.nav-title');
-            if (title) {
-                title.setAttribute('data-text', title.textContent);
-            }
-            
             card.addEventListener('mouseenter', function() {
                 this.style.transform = 'translateY(-4px)';
-                
-                // Add random glitch intensity
-                const intensity = Math.random() * 0.5 + 0.5;
-                this.style.setProperty('--glitch-intensity', intensity);
-                
-                // Trigger pixel corruption effect
-                if (Math.random() > 0.7) {
-                    this.classList.add('glitch-active');
-                    setTimeout(() => {
-                        this.classList.remove('glitch-active');
-                    }, 200);
-                }
             });
             
             card.addEventListener('mouseleave', function() {
                 this.style.transform = '';
-                this.classList.remove('glitch-active');
-            });
-            
-            // Add random glitch on interval for active cards
-            card.addEventListener('mouseenter', function() {
-                this.glitchInterval = setInterval(() => {
-                    if (Math.random() > 0.8) {
-                        this.style.filter = `hue-rotate(${Math.random() * 10}deg) brightness(${0.95 + Math.random() * 0.1})`;
-                        setTimeout(() => {
-                            this.style.filter = '';
-                        }, 50);
-                    }
-                }, 300);
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                clearInterval(this.glitchInterval);
-                this.style.filter = '';
             });
         });
     }
