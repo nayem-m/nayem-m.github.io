@@ -262,8 +262,10 @@ a:hover {
 .card:hover {
     border-color: var(--primary-green);
     box-shadow: 0 8px 30px var(--shadow-hover);
-    animation: glitch-box 0.4s ease;
+    transform: translateY(-4px);
+    animation: none;
 }
+
 
 /* Glitch Pixel Effect for Cards */
 .card::before,
@@ -324,14 +326,20 @@ a:hover {
 }
 
 /* Glitch Text Effect for Card Content */
-.card:hover .nav-title,
-.card:hover .nav-icon {
-    animation: glitch-text 0.3s infinite;
+/* Glitch Text Effect – TITLE ONLY */
+.nav-card .nav-title {
     position: relative;
+    display: inline-block;
 }
 
-.card:hover .nav-title::before,
-.card:hover .nav-title::after {
+/* Only the title glitches when you hover the card */
+.nav-card:hover .nav-title {
+    animation: glitch-text 0.3s infinite;
+}
+
+/* Colour channel / pixel-ish offsets for the title text */
+.nav-card:hover .nav-title::before,
+.nav-card:hover .nav-title::after {
     content: attr(data-text);
     position: absolute;
     top: 0;
@@ -339,6 +347,22 @@ a:hover {
     width: 100%;
     height: 100%;
 }
+
+.nav-card:hover .nav-title::before {
+    animation: glitch-text-1 0.5s infinite;
+    color: var(--accent-cyan);
+    z-index: -1;
+    opacity: 0.8;
+}
+
+.nav-card:hover .nav-title::after {
+    animation: glitch-text-2 0.5s infinite;
+    color: var(--warning-red, #ff0040);
+    z-index: -2;
+    opacity: 0.8;
+}
+
+
 
 .card:hover .nav-title::before {
     animation: glitch-text-1 0.5s infinite;
@@ -908,3 +932,19 @@ a:hover {
         border: 1px solid #ddd;
     }
 }
+
+/* === Disable card-wide glitch layers – keep it just for the title === */
+.card::before,
+.card::after,
+.nav-card::before {
+    content: none !important;
+    animation: none !important;
+    opacity: 0 !important;
+}
+
+/* Disable the description scan-line glitch */
+.card:hover .nav-description::after {
+    content: none !important;
+    animation: none !important;
+}
+

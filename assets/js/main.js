@@ -151,23 +151,29 @@
             });
             
             // Add random glitch on interval for active cards
-            card.addEventListener('mouseenter', function() {
-                this.glitchInterval = setInterval(() => {
-                    if (Math.random() > 0.8) {
-                        this.style.filter = `hue-rotate(${Math.random() * 10}deg) brightness(${0.95 + Math.random() * 0.1})`;
-                        setTimeout(() => {
-                            this.style.filter = '';
-                        }, 50);
-                    }
-                }, 300);
-            });
+	  card.addEventListener('mouseenter', function() {
+	    const title = this.querySelector('.nav-title');
+	    if (!title) return;
+
+	    this.glitchInterval = setInterval(() => {
+		if (Math.random() > 0.8) {
+		    title.style.filter = `hue-rotate(${Math.random() * 10}deg) brightness(${0.95 + Math.random() * 0.1})`;
+		    setTimeout(() => {
+			title.style.filter = '';
+		    }, 50);
+		}
+	    }, 300);
+	});
+
+	card.addEventListener('mouseleave', function() {
+	    clearInterval(this.glitchInterval);
+	    const title = this.querySelector('.nav-title');
+	    if (title) {
+		title.style.filter = '';
+	    }
+	});
             
-            card.addEventListener('mouseleave', function() {
-                clearInterval(this.glitchInterval);
-                this.style.filter = '';
-            });
-        });
-    }
+}
     
     /**
      * Console Easter Eggs
