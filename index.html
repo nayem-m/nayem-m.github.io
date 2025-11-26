@@ -1,0 +1,432 @@
+---
+layout: default
+title: Home
+---
+
+<div class="container">
+    <!-- Hero Section -->
+    <header class="hero-section terminal">
+        <div class="terminal-header">
+            <div class="terminal-prompt">whoami</div>
+        </div>
+        <div class="terminal-content">
+            <h1 class="typing-effect" data-speed="100" data-delay="500">Moosa Nayem</h1>
+            <div class="tagline">
+                <span class="tagline-item">Ethical Hacker</span>
+                <span class="tagline-item">Cybersecurity Student</span>
+                <span class="tagline-item">NEBRC Security Analyst</span>
+            </div>
+            <div class="status-pills">
+                <div class="pill">
+                    <span class="pill-dot"></span>
+                    Available for Graduate Roles
+                </div>
+                <div class="pill">
+                    <span class="pill-dot"></span>
+                    Top 10% Academic Performance
+                </div>
+                <div class="pill">
+                    <span class="pill-dot"></span>
+                    Active Security Researcher
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Cards Grid -->
+    <section class="nav-grid">
+        <a href="{{ '/experience' | relative_url }}" class="nav-card card">
+            <span class="nav-icon">./</span>
+            <div class="nav-title">Experience</div>
+            <div class="nav-description">Professional cybersecurity experience including penetration testing and vulnerability assessment</div>
+            <div class="nav-tags">
+                <span class="tag">NEBRC</span>
+                <span class="tag">Penetration Testing</span>
+                <span class="tag">CTF</span>
+            </div>
+        </a>
+
+        <a href="{{ '/projects' | relative_url }}" class="nav-card card">
+            <span class="nav-icon">&lt;/&gt;</span>
+            <div class="nav-title">Projects</div>
+            <div class="nav-description">Security tools, exploits, and automation scripts developed for research and testing</div>
+            <div class="nav-tags">
+                <span class="tag">Python</span>
+                <span class="tag">Burp Suite</span>
+                <span class="tag">Metasploit</span>
+            </div>
+        </a>
+
+        <a href="{{ '/education' | relative_url }}" class="nav-card card">
+            <span class="nav-icon">~</span>
+            <div class="nav-title">Education</div>
+            <div class="nav-description">BSc Networks and Cybersecurity at Northumbria University with 89% average</div>
+            <div class="nav-tags">
+                <span class="tag">First Class Honours</span>
+                <span class="tag">Research</span>
+            </div>
+        </a>
+
+        <a href="{{ '/writeups' | relative_url }}" class="nav-card card">
+            <span class="nav-icon">#</span>
+            <div class="nav-title">Security Research</div>
+            <div class="nav-description">HTB writeups, vulnerability research, and security blog posts</div>
+            <div class="nav-tags">
+                <span class="tag">Bug Bounty</span>
+                <span class="tag">HTB</span>
+                <span class="tag">CVE Research</span>
+            </div>
+        </a>
+
+        <a href="{{ '/certifications' | relative_url }}" class="nav-card card">
+            <span class="nav-icon">0x</span>
+            <div class="nav-title">Certifications</div>
+            <div class="nav-description">Professional certifications and ongoing security training</div>
+            <div class="nav-tags">
+                <span class="tag">HTB Bug Bounty</span>
+                <span class="tag">CCNA</span>
+                <span class="tag">Azure</span>
+            </div>
+        </a>
+
+        <a href="{{ '/cv' | relative_url }}" class="nav-card card">
+            <span class="nav-icon">$</span>
+            <div class="nav-title">Resume / CV</div>
+            <div class="nav-description">Download my complete resume and professional documentation</div>
+            <div class="nav-tags">
+                <span class="tag">PDF</span>
+                <span class="tag">ATS-Optimized</span>
+            </div>
+        </a>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills-section card">
+        <h2 class="section-title">Technical Proficiencies</h2>
+        <div class="skills-grid">
+            <div class="skill-item">
+                <div class="skill-icon">PT</div>
+                <div class="skill-info">
+                    <div class="skill-name">Penetration Testing</div>
+                    <div class="skill-level">Advanced • Production Experience</div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-icon">PY</div>
+                <div class="skill-info">
+                    <div class="skill-name">Python Development</div>
+                    <div class="skill-level">Advanced • Automation & Exploits</div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-icon">NT</div>
+                <div class="skill-info">
+                    <div class="skill-name">Network Security</div>
+                    <div class="skill-level">Advanced • CCNA Certified</div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-icon">WB</div>
+                <div class="skill-info">
+                    <div class="skill-name">Web Security</div>
+                    <div class="skill-level">Advanced • OWASP Top 10</div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-icon">LX</div>
+                <div class="skill-info">
+                    <div class="skill-name">Linux Systems</div>
+                    <div class="skill-level">Advanced • Shell Scripting</div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-icon">FS</div>
+                <div class="skill-info">
+                    <div class="skill-name">Digital Forensics</div>
+                    <div class="skill-level">Intermediate • FTK & Autopsy</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Posts Preview -->
+    {% if site.posts.size > 0 %}
+    <section class="recent-posts card">
+        <h2 class="section-title">Latest Security Research</h2>
+        <div class="posts-list">
+            {% for post in site.posts limit:3 %}
+            <article class="post-preview">
+                <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+                <div class="post-meta">
+                    <span class="post-date">{{ post.date | date: "%B %d, %Y" }}</span>
+                    {% if post.categories.size > 0 %}
+                    <span class="post-categories">
+                        {% for category in post.categories %}
+                        <span class="tag">{{ category }}</span>
+                        {% endfor %}
+                    </span>
+                    {% endif %}
+                </div>
+                <p>{{ post.excerpt | strip_html | truncate: 150 }}</p>
+            </article>
+            {% endfor %}
+        </div>
+        <a href="{{ '/blog' | relative_url }}" class="btn">View All Posts →</a>
+    </section>
+    {% endif %}
+
+    <!-- Contact CTA -->
+    <section class="contact-section card">
+        <h2 class="contact-title">Let's Connect</h2>
+        <p>Currently seeking graduate placement opportunities in cybersecurity.</p>
+        <div class="contact-links">
+            <a href="mailto:{{ site.author.email }}" class="btn">Send Email</a>
+            <a href="https://github.com/{{ site.github_username }}" class="btn btn-secondary">GitHub Profile</a>
+            <a href="https://linkedin.com/in/{{ site.linkedin_username }}" class="btn btn-secondary">LinkedIn</a>
+        </div>
+    </section>
+</div>
+
+<style>
+/* Homepage Specific Styles */
+.hero-section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.tagline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.tagline-item {
+    position: relative;
+    padding-left: 20px;
+    color: var(--text-gray);
+    font-size: 18px;
+}
+
+.tagline-item::before {
+    content: ">";
+    position: absolute;
+    left: 0;
+    color: var(--primary-green);
+    font-weight: bold;
+}
+
+.status-pills {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.nav-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+    margin-bottom: var(--spacing-lg);
+}
+
+.nav-card {
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.nav-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--primary-green);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+    transform-origin: bottom;
+}
+
+.nav-card:hover::before {
+    transform: scaleY(1);
+}
+
+.nav-icon {
+    font-size: 32px;
+    color: var(--text-gray);
+    margin-bottom: 15px;
+    display: block;
+    transition: all 0.3s ease;
+    font-weight: 700;
+}
+
+.nav-card:hover .nav-icon {
+    color: var(--primary-green);
+    transform: scale(1.1);
+}
+
+.nav-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-dark);
+}
+
+.nav-description {
+    font-size: 14px;
+    color: var(--text-gray);
+    line-height: 1.4;
+    margin-bottom: 15px;
+}
+
+.nav-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag {
+    background: var(--bg-light);
+    color: var(--dark-green);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1px solid var(--primary-green);
+    opacity: 0.7;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.skill-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.skill-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--light-green);
+    border: 2px solid var(--primary-green);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: var(--dark-green);
+    font-size: 14px;
+}
+
+.skill-info {
+    flex: 1;
+}
+
+.skill-name {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 14px;
+}
+
+.skill-level {
+    font-size: 12px;
+    color: var(--text-gray);
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: var(--text-dark);
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--primary-green);
+}
+
+.contact-section {
+    text-align: center;
+    background: linear-gradient(135deg, var(--light-green) 0%, var(--bg-white) 100%);
+}
+
+.contact-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--text-dark);
+}
+
+.contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.recent-posts {
+    margin-bottom: var(--spacing-lg);
+}
+
+.posts-list {
+    margin-bottom: 30px;
+}
+
+.post-preview {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.post-preview:last-child {
+    border-bottom: none;
+}
+
+.post-preview h3 {
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.post-meta {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: var(--text-gray);
+}
+
+.post-categories {
+    display: flex;
+    gap: 8px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .tagline {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>

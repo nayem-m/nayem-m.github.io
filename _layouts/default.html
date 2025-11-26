@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+    <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    
+    <!-- SEO Meta Tags -->
+    <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta property="og:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+    
+    <!-- Professional Mono Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+    
+    <!-- Page Specific Styles -->
+    {% if page.custom_css %}
+        {% for stylesheet in page.custom_css %}
+            <link rel="stylesheet" href="{{ stylesheet | relative_url }}">
+        {% endfor %}
+    {% endif %}
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ '/assets/images/favicon.ico' | relative_url }}">
+</head>
+<body class="{% if page.body_class %}{{ page.body_class }}{% endif %}">
+    <!-- Dynamic Matrix Grid Background -->
+    <div class="matrix-grid" id="matrixGrid"></div>
+    
+    <!-- Navigation Header (appears on all pages) -->
+    <nav class="site-nav">
+        <div class="nav-container">
+            <a href="{{ '/' | relative_url }}" class="nav-logo">
+                <span class="nav-prompt">$</span> {{ site.short_name | default: "moosa_nayem" }}
+            </a>
+            <div class="nav-links">
+                <a href="{{ '/' | relative_url }}" class="nav-link {% if page.url == '/' %}active{% endif %}">~/home</a>
+                <a href="{{ '/writeups' | relative_url }}" class="nav-link {% if page.url contains '/writeups' %}active{% endif %}">./writeups</a>
+                <a href="{{ '/projects' | relative_url }}" class="nav-link {% if page.url contains '/projects' %}active{% endif %}">&lt;/projects&gt;</a>
+                <a href="{{ '/blog' | relative_url }}" class="nav-link {% if page.url contains '/blog' %}active{% endif %}">#blog</a>
+                <a href="{{ '/about' | relative_url }}" class="nav-link {% if page.url == '/about/' %}active{% endif %}">$whoami</a>
+                <a href="{{ '/cv' | relative_url }}" class="nav-link {% if page.url == '/cv/' %}active{% endif %}">resume.pdf</a>
+            </div>
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="site-content">
+        {{ content }}
+    </main>
+
+    <!-- Footer (appears on all pages) -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <p>© {{ 'now' | date: '%Y' }} {{ site.author.name }} • {{ site.tagline }}</p>
+                <div class="footer-command">$ echo "{{ site.motto | default: 'Securing the digital future, one vulnerability at a time' }}"</div>
+            </div>
+            <div class="footer-links">
+                <a href="mailto:{{ site.author.email }}" class="footer-link">Email</a>
+                <a href="https://github.com/{{ site.github_username }}" class="footer-link">GitHub</a>
+                <a href="https://linkedin.com/in/{{ site.linkedin_username }}" class="footer-link">LinkedIn</a>
+                {% if site.twitter_username %}
+                <a href="https://twitter.com/{{ site.twitter_username }}" class="footer-link">Twitter</a>
+                {% endif %}
+            </div>
+        </div>
+    </footer>
+
+    <!-- Core JavaScript -->
+    <script src="{{ '/assets/js/matrix-grid.js' | relative_url }}"></script>
+    <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+    
+    <!-- Page Specific Scripts -->
+    {% if page.custom_js %}
+        {% for script in page.custom_js %}
+            <script src="{{ script | relative_url }}"></script>
+        {% endfor %}
+    {% endif %}
+    
+    <!-- Analytics (if configured) -->
+    {% if site.google_analytics %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ site.google_analytics }}');
+    </script>
+    {% endif %}
+</body>
+</html>
