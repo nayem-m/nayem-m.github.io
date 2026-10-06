@@ -78,10 +78,31 @@
         <a href="https://www.linkedin.com/in/{{ site.social.linkedin }}" target="_blank" rel="noopener">linkedin</a>
         <a href="{{ '/blog/' | relative_url }}">blog</a>
         <a href="{{ '/feed.xml' | relative_url }}">rss</a>
+        <button class="qr-open" id="qrOpen" type="button" aria-haspopup="dialog" aria-controls="qrDialog">qr</button>
         <button class="theme-cycle" id="themeCycle" type="button" title="Cycle colour theme">theme: <b id="themeName">redteam</b></button>
       </div>
     </div>
   </footer>
+
+  <dialog class="qr" id="qrDialog" aria-labelledby="qrTitle">
+    <div class="qr__head">
+      <span id="qrTitle"><span class="acc">$</span> qrencode --scan-with-phone</span>
+      <button class="qr__close" type="button" data-qr-close aria-label="Close">[ esc ]</button>
+    </div>
+    <div class="qr__grid">
+      <a class="qr__card" href="{{ site.url }}" target="_blank" rel="noopener">
+        <span class="qr__code">{% include qr-site.svg %}</span>
+        <span class="qr__k">~/website</span>
+        <span class="qr__v">nayem-m.github.io</span>
+      </a>
+      <a class="qr__card" href="https://www.linkedin.com/in/{{ site.social.linkedin }}" target="_blank" rel="noopener">
+        <span class="qr__code">{% include qr-linkedin.svg %}</span>
+        <span class="qr__k">~/linkedin</span>
+        <span class="qr__v">in/moosa-nayem</span>
+      </a>
+    </div>
+    <p class="qr__hint">point your phone camera at a code</p>
+  </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 

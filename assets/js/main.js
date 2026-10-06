@@ -162,6 +162,16 @@
     });
   }
 
+  /* ---------- qr dialog ---------- */
+  var qr = $('#qrDialog'), qrOpen = $('#qrOpen');
+  if (qr && qrOpen) {
+    if (typeof qr.showModal !== 'function') qrOpen.style.display = 'none';
+    qrOpen.addEventListener('click', function () { qr.showModal(); });
+    $$('[data-qr-close]', qr).forEach(function (b) { b.addEventListener('click', function () { qr.close(); }); });
+    // click on the backdrop closes it
+    qr.addEventListener('click', function (e) { if (e.target === qr) qr.close(); });
+  }
+
   /* ---------- copy handlers ---------- */
   $$('[data-copy-text]').forEach(function (b) {
     b.addEventListener('click', function () { copy(b.getAttribute('data-copy-text')); });
