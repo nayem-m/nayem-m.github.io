@@ -4,7 +4,7 @@
 
 - group: tooling
   label: Tooling
-  items: [Burp Suite, Caido, Nmap, Metasploit, sqlmap, ffuf, Gobuster, Wireshark, Nessus, OpenVAS]
+  items: [Burp Suite, Caido, Nmap, Metasploit, sqlmap, ffuf, Gobuster, Wireshark, Nessus]
 
 - group: ai
   label: AI-Assisted Offense
@@ -16,7 +16,7 @@
 
 - group: defence
   label: Defence & Forensics
-  items: [GoPhish, MITRE ATT&CK, Incident Response, Autopsy, FTK Imager, Volatility]
+  items: [GoPhish, MITRE ATT&CK, Autopsy, FTK Imager, Volatility]
 
 - group: systems
   label: Systems & Networking
