@@ -1,0 +1,84 @@
+# Experience + education, newest first.
+# type: work | edu      head: true marks the current role (HEAD -> main)
+# sha is decorative — any 7 hex chars.
+
+- sha: 9f3c2e1
+  head: true
+  type: work
+  when: Oct 2026 — now
+  role: Graduate Trainee — GP15
+  org: Central Bank of Bahrain
+  location: Manama, BH
+  summary: >-
+    Selected as one of 15 graduates from 1,600 applicants for the Central Bank
+    of Bahrain's flagship graduate programme. Started 1 October 2026.
+  tags: [GP15, 15 / 1600, under 1% acceptance]
+
+- sha: 4b7a0d9
+  type: work
+  when: Aug 2026 — Oct 2026
+  role: Penetration Tester
+  org: Vulnxperts
+  location: Bahrain
+  points:
+    - Delivered scoped web application and infrastructure penetration tests for enterprise clients, from recon and enumeration through exploitation to remediation.
+    - Tested against the OWASP Top 10 (injection, authentication and access-control flaws, BOLA, insecure file upload) with Burp Suite, Nmap, sqlmap, ffuf and Metasploit.
+    - Wrote client-facing reports with reproduction steps, CVSS-based severity and prioritised remediation, and presented findings to technical and non-technical stakeholders.
+  tags: [Web App, Infrastructure, OWASP Top 10, Burp Suite, CVSS]
+
+- sha: e21c8f4
+  type: edu
+  when: Class of 2026
+  role: BSc (Hons) Networks & Cybersecurity
+  org: Northumbria University
+  location: Newcastle upon Tyne, UK
+  points:
+    - First-Class Honours, overall mark 90%.
+    - "Advanced Security 89% (ethical hacking, pentesting, securing servers) · Digital Forensics 90% · Networking 90%."
+    - "Dissertation (90%): designed and ran a factorial experiment on mandatory age verification with 57 participants, on a web platform I built, analysed in R."
+    - Year 1 average 82%, top 10 of 430 students in Computing Fundamentals.
+  tags: [First-Class, 90% overall]
+
+- sha: 7d10a3b
+  type: work
+  when: 2024 — 2026
+  role: Ethical Hacker (Part-time)
+  org: North East Business Resilience Centre
+  location: UK
+  points:
+    - Selected from 90+ applicants across UK universities to deliver security services to small and medium businesses.
+    - Ran vulnerability assessments across North East England and turned findings into prioritised remediation guidance for non-technical clients.
+  tags: [NEBRC, Vuln Assessment, SMEs]
+
+- sha: c08e5f2
+  type: work
+  when: Aug 2024
+  role: Cybersecurity Intern
+  org: NGN International
+  location: Bahrain
+  points:
+    - Network scanning and reconnaissance with Nmap; shadowed live penetration-test engagements with senior consultants from scoping to final report.
+  tags: [Nmap, Recon]
+
+- sha: 3a9b6d0
+  type: work
+  when: Jul 2024 — Mar 2025
+  role: Front-End Developer (Remote)
+  org: Kuwait Integrated Technology Solutions
+  location: Remote
+  points:
+    - Built and maintained web applications to spec, managing code via Git in a collaborative team.
+  tags: [JavaScript, Svelte, Git]
+
+- sha: 0000001
+  type: edu
+  root: true
+  when: root commit
+  role: High School Diploma
+  org: Al Raja School
+  location: Bahrain
+  points:
+    - Cumulative average 97.23%. AP Computer Science 5, AP Calculus 4.
+    - Represented Bahrain at U16 national basketball level in the GCC league — gold medal.
+    - Student Council President; organised a graduation ceremony for 800+ guests.
+  tags: [97.23%, Team Bahrain, Student Council]

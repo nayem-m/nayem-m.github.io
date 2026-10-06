@@ -1,0 +1,16 @@
+---
+layout: default
+title: 404
+permalink: /404.html
+---
+
+<section class="wrap e404">
+  <div class="e404__code">404</div>
+  <pre><span class="acc">$</span> curl -I {{ site.url }}<span id="p404"></span>
+HTTP/2 404
+x-reason: path not found. no IDOR here either, I checked.
+
+<span class="acc">$</span> <span class="caret"></span></pre>
+  <div><a class="btn btn--solid" href="{{ '/' | relative_url }}"><span>cd ~</span><i>↩</i></a></div>
+</section>
+<script>document.getElementById('p404').textContent = location.pathname;</script>

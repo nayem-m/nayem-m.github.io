@@ -1,0 +1,39 @@
+title: Moosa Nayem
+tagline: Penetration Tester // CBB GP15 Graduate Trainee
+description: >-
+  Moosa Nayem — penetration tester from Bahrain. eJPT certified, First-Class
+  Honours in Networks & Cybersecurity, and one of 15 graduates on the Central
+  Bank of Bahrain's GP15 programme.
+url: "https://nayem-m.github.io"
+baseurl: ""
+
+author:
+  name: Moosa Nayem
+  email: nayempw@protonmail.com
+  location: Manama, Bahrain
+
+social:
+  github: nayem-m
+  linkedin: moosa-nayem-540784334
+  htb: seanporter
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+permalink: /blog/:year/:month/:title/
+
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+feed:
+  path: feed.xml
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor

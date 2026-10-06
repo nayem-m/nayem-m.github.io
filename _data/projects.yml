@@ -1,0 +1,29 @@
+- name: drupalgeddon2-cli
+  kind: exploit / tooling
+  url: https://github.com/nayem-m/drupalgeddon2-cli
+  lang: Python
+  desc: >-
+    A command-line rewrite of the Drupalgeddon2 (CVE-2018-7600) proof of concept,
+    built while working through HTB Academy's Attacking Common Applications.
+    Auto-plants a web shell with a randomised name and parameter, and supports
+    one-shot commands or an interactive pseudo-shell. For authorised testing only.
+  tags: [CVE-2018-7600, RCE, HTB Academy]
+
+- name: Fantasy Cyber League
+  kind: phishing simulation
+  url: https://github.com/nayem-m/grp_prjct
+  lang: Group Project
+  desc: >-
+    A gamified security-awareness platform (university group project). I owned the
+    phishing simulator: self-hosted GoPhish with authentication, dashboards and a
+    webhook processor, deployed via CI. Found and fixed an XSS flaw along the way.
+  tags: [GoPhish, CI/CD, XSS fix]
+
+- name: Age-Verification Experiment
+  kind: research platform
+  lang: PHP / R
+  desc: >-
+    Dissertation project (90%). Designed and ran a factorial experiment on mandatory
+    age verification with 57 participants, on a web platform I built from scratch,
+    then analysed the results in R.
+  tags: [Research, Web Platform, R]

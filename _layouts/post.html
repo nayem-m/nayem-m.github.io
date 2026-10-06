@@ -1,0 +1,23 @@
+---
+layout: default
+---
+{% assign words = content | strip_html | number_of_words %}
+<article class="wrap">
+  <header class="post-head">
+    <a class="back" href="{{ '/blog/' | relative_url }}">← cd ~/blog</a>
+    <h1 class="post-title">{{ page.title }}</h1>
+    <div class="post-head__meta">
+      <span><b>date</b> {{ page.date | date: '%Y-%m-%d' }}</span>
+      <span><b>read</b> {{ words | divided_by: 200 | plus: 1 | floor }} min</span>
+      {% if page.tags.size > 0 %}<span class="tags">{% for t in page.tags %}<span class="tag">{{ t }}</span>{% endfor %}</span>{% endif %}
+    </div>
+  </header>
+
+  <div class="prose">
+    {{ content }}
+  </div>
+
+  <div class="post-foot" style="padding-bottom:40px">
+    <a class="btn" href="{{ '/blog/' | relative_url }}"><span>all posts</span><i>←</i></a>
+  </div>
+</article>

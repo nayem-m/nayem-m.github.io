@@ -1,0 +1,23 @@
+# status: done | progress | queued    progress: 0-100 (omit for queued)
+- id: ejpt
+  name: eJPT
+  full: eLearnSecurity Junior Penetration Tester
+  issuer: INE Security
+  status: done
+  progress: 100
+  note: Certified. Practical, hands-on network and web pentest exam.
+
+- id: cwes
+  name: CWES
+  full: Certified Web Exploitation Specialist
+  issuer: Hack The Box
+  status: progress
+  progress: 88
+  note: SQLi, XSS, file upload, command injection and API testing.
+
+- id: oscp
+  name: OSCP
+  full: Offensive Security Certified Professional
+  issuer: OffSec
+  status: queued
+  note: Currently in preparation. The next boss fight.

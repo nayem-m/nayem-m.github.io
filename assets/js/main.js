@@ -1,346 +1,307 @@
-/**
- * Main JavaScript for Moosa Nayem Portfolio
- * Handles navigation, animations, and interactive elements
- */
+/* ==========================================================================
+   main.js — boot sequence, nav, reveals, text effects, clock, themes
+   ========================================================================== */
+(function () {
+  'use strict';
 
-(function() {
-    'use strict';
-    
-    /**
-     * Mobile Navigation Toggle
-     */
-    function initMobileNav() {
-        const navToggle = document.getElementById('navToggle');
-        const navLinks = document.querySelector('.nav-links');
-        
-        if (!navToggle || !navLinks) return;
-        
-        navToggle.addEventListener('click', function() {
-            navLinks.classList.toggle('active');
-            this.classList.toggle('active');
-            
-            // Animate hamburger to X
-            const spans = this.querySelectorAll('span');
-            if (this.classList.contains('active')) {
-                spans[0].style.transform = 'rotate(45deg) translateY(8px)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translateY(-8px)';
-            } else {
-                spans[0].style.transform = '';
-                spans[1].style.opacity = '';
-                spans[2].style.transform = '';
-            }
-        });
-        
-        // Close menu when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
-                navLinks.classList.remove('active');
-                navToggle.classList.remove('active');
-            }
-        });
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  function store(k, v) {
+    try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; }
+  }
+  function sstore(k, v) {
+    try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch (e) { return null; }
+  }
+
+  /* ---------- toast + clipboard ---------- */
+  var toastEl = $('#toast'), toastT;
+  function toast(msg) {
+    if (!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.classList.add('is-on');
+    clearTimeout(toastT);
+    toastT = setTimeout(function () { toastEl.classList.remove('is-on'); }, 2200);
+  }
+  function copy(text) {
+    var done = function () { toast('> copied: ' + text); };
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(done, function () { fallback(text); done(); });
+    } else { fallback(text); done(); }
+  }
+  function fallback(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  /* ---------- themes ---------- */
+  var THEMES = ['redteam', 'phosphor', 'amber', 'mono'];
+  function setTheme(name) {
+    if (THEMES.indexOf(name) < 0) return false;
+    document.documentElement.setAttribute('data-theme', name);
+    store('mn-theme', name);
+    var n = $('#themeName'); if (n) n.textContent = name;
+    window.dispatchEvent(new CustomEvent('themechange', { detail: name }));
+    return true;
+  }
+  function currentTheme() { return document.documentElement.getAttribute('data-theme') || 'redteam'; }
+
+  /* expose a tiny API for terminal.js / portrait.js */
+  window.MN = { toast: toast, copy: copy, setTheme: setTheme, themes: THEMES, currentTheme: currentTheme, reduced: reduced };
+
+  /* ---------- boot sequence (once per session, home only) ---------- */
+  function boot(done) {
+    if (reduced || sstore('mn-booted') || !document.body.classList.contains('home')) return done();
+    sstore('mn-booted', '1');
+    var lines = [
+      ['[  0.000000] ', 'nayem-os 6.10.0-redteam #1 SMP PREEMPT_DYNAMIC'],
+      ['[  0.004219] ', 'cpu0: caffeine-driven core detected, 1 thread, unlimited curiosity'],
+      ['[  0.031337] ', 'mounting /home/moosa ', 'ok'],
+      ['[  0.069420] ', 'loading modules: burp nmap sqlmap ffuf metasploit ', 'ok'],
+      ['[  0.112003] ', 'cert/ejpt ', 'verified'],
+      ['[  0.140188] ', 'cert/cwes ', '88%'],
+      ['[  0.171512] ', 'cert/oscp ', 'in progress'],
+      ['[  0.203001] ', 'job: central-bank-of-bahrain/gp15 ', 'active'],
+      ['[  0.240000] ', 'establishing session with visitor ', 'ok'],
+      ['', '> access granted. welcome.']
+    ];
+    var el = document.createElement('div');
+    el.className = 'boot';
+    el.setAttribute('aria-hidden', 'true');
+    el.innerHTML = '<span class="boot__skip">click / any key to skip</span>';
+    document.body.appendChild(el);
+    var i = 0, finished = false;
+    function finish() {
+      if (finished) return; finished = true;
+      el.classList.add('is-done');
+      setTimeout(function () { el.remove(); }, 600);
+      window.removeEventListener('keydown', finish);
+      done();
     }
-    
-    /**
-     * Typing Animation Effect
-     */
-    function initTypingEffect() {
-        const elements = document.querySelectorAll('.typing-effect');
-        
-        elements.forEach(element => {
-            const text = element.textContent;
-            element.textContent = '';
-            element.style.visibility = 'visible';
-            
-            let i = 0;
-            const speed = element.dataset.speed || 100;
-            
-            function typeWriter() {
-                if (i < text.length) {
-                    element.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, speed);
-                }
-            }
-            
-            // Start typing after a delay
-            setTimeout(typeWriter, element.dataset.delay || 500);
-        });
+    el.addEventListener('click', finish);
+    window.addEventListener('keydown', finish);
+    (function next() {
+      if (finished) return;
+      if (i >= lines.length) return setTimeout(finish, 380);
+      var l = lines[i++], p = document.createElement('p');
+      var a = document.createElement('span'); a.textContent = l[0]; p.appendChild(a);
+      var b = document.createElement('span'); b.textContent = l[1]; if (!l[0]) b.className = 'hi'; p.appendChild(b);
+      if (l[2]) {
+        var dots = document.createElement('span'); dots.textContent = '.'.repeat(Math.max(2, 46 - l[1].length)) + ' '; p.appendChild(dots);
+        var c = document.createElement('span'); c.className = 'ok'; c.textContent = l[2]; p.appendChild(c);
+      }
+      el.insertBefore(p, el.lastChild);
+      setTimeout(next, 90 + Math.random() * 110);
+    })();
+  }
+
+  /* ---------- nav ---------- */
+  var topbar = $('#topbar'), burger = $('#burger'), nav = $('#nav');
+  function closeNav() {
+    if (!nav) return;
+    nav.classList.remove('is-open');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+  if (burger && nav) {
+    burger.addEventListener('click', function () {
+      var open = !nav.classList.contains('is-open');
+      nav.classList.toggle('is-open', open);
+      burger.setAttribute('aria-expanded', String(open));
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    $$('a', nav).forEach(function (a) { a.addEventListener('click', closeNav); });
+    window.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeNav(); });
+  }
+  function onScroll() { if (topbar) topbar.classList.toggle('is-scrolled', window.scrollY > 8); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // highlight the section in view
+  var navLinks = $$('[data-sec]');
+  if ('IntersectionObserver' in window && navLinks.length) {
+    var secIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        navLinks.forEach(function (a) { a.classList.toggle('is-active', a.dataset.sec === en.target.id); });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    navLinks.forEach(function (a) { var s = document.getElementById(a.dataset.sec); if (s) secIO.observe(s); });
+  }
+
+  /* ---------- clock + uptime ---------- */
+  var clock = $('#clock'), uptime = $('#uptime'), t0 = Date.now();
+  var fmt;
+  try { fmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Bahrain', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }); } catch (e) {}
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function tick() {
+    if (clock && fmt) clock.textContent = fmt.format(new Date());
+    if (uptime) {
+      var s = Math.floor((Date.now() - t0) / 1000);
+      uptime.textContent = pad(Math.floor(s / 3600)) + ':' + pad(Math.floor(s / 60) % 60) + ':' + pad(s % 60);
     }
-    
-    /**
-     * Terminal Prompt Animation
-     */
-    function initTerminalPrompts() {
-        const prompts = document.querySelectorAll('.terminal-prompt');
-        
-        prompts.forEach(prompt => {
-            if (prompt.dataset.animated === 'true') return;
-            
-            const originalText = prompt.textContent;
-            prompt.textContent = '';
-            prompt.dataset.animated = 'true';
-            
-            let i = 0;
-            function typeCommand() {
-                if (i < originalText.length) {
-                    prompt.textContent += originalText.charAt(i);
-                    i++;
-                    setTimeout(typeCommand, 50);
-                }
-            }
-            
-            setTimeout(typeCommand, 300);
-        });
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* ---------- theme cycle button ---------- */
+  var cycle = $('#themeCycle');
+  if (cycle) {
+    $('#themeName').textContent = currentTheme();
+    cycle.addEventListener('click', function () {
+      var i = THEMES.indexOf(currentTheme());
+      var next = THEMES[(i + 1) % THEMES.length];
+      setTheme(next);
+      toast('> theme set: ' + next);
+    });
+  }
+
+  /* ---------- copy handlers ---------- */
+  $$('[data-copy-text]').forEach(function (b) {
+    b.addEventListener('click', function () { copy(b.getAttribute('data-copy-text')); });
+  });
+  var cmdbox = $('[data-cmdbox]');
+  if (cmdbox) {
+    var out = $('[data-cmd-out]', cmdbox), tabs = $$('[data-cmd]', cmdbox), active = tabs[0];
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        tabs.forEach(function (x) { x.classList.toggle('is-on', x === t); x.setAttribute('aria-selected', String(x === t)); });
+        active = t;
+        scramble(out, t.getAttribute('data-cmd'), 380);
+      });
+    });
+    $('[data-cmd-copy]', cmdbox).addEventListener('click', function () { copy(active.getAttribute('data-copy')); });
+  }
+
+  /* ---------- text scramble ---------- */
+  var GLYPHS = '!<>-_\\/[]{}=+*^?#$%&@01ABCDEFX';
+  function scramble(el, finalText, dur) {
+    if (reduced) { el.textContent = finalText; return; }
+    var from = el.textContent, len = Math.max(from.length, finalText.length);
+    var start = performance.now(); dur = dur || 900;
+    var q = [];
+    for (var i = 0; i < len; i++) {
+      var s = Math.random() * dur * 0.45, e = s + dur * 0.3 + Math.random() * dur * 0.25;
+      q.push({ from: from[i] || '', to: finalText[i] || '', s: s, e: e });
     }
-    
-    /**
-     * Smooth Scroll for Anchor Links
-     */
-    function initSmoothScroll() {
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                
-                if (target) {
-                    const offset = 80; // Account for fixed header
-                    const targetPosition = target.offsetTop - offset;
-                    
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
+    cancelAnimationFrame(el._scr);
+    (function frame(now) {
+      var t = now - start, out = '', done = 0;
+      for (var i = 0; i < q.length; i++) {
+        var c = q[i];
+        if (t >= c.e) { out += c.to; done++; }
+        else if (t >= c.s) { out += c.to === ' ' ? ' ' : GLYPHS[(Math.random() * GLYPHS.length) | 0]; }
+        else out += c.from;
+      }
+      el.textContent = out;
+      if (done < q.length) el._scr = requestAnimationFrame(frame);
+    })(start);
+  }
+  window.MN.scramble = scramble;
+
+  /* ---------- typed roles ---------- */
+  var typed = $('#typed');
+  if (typed && !reduced) {
+    var roles = ['penetration tester.', 'cbb gp15 graduate trainee.', 'eJPT certified.', 'first-class cybersecurity grad.', 'web & api breaker.', 'oscp: in progress...'];
+    var ri = 0, ci = roles[0].length, deleting = true;
+    (function typeLoop() {
+      var word = roles[ri];
+      if (deleting) {
+        ci--;
+        typed.textContent = word.slice(0, ci);
+        if (ci <= 0) { deleting = false; ri = (ri + 1) % roles.length; return setTimeout(typeLoop, 260); }
+        return setTimeout(typeLoop, 28);
+      }
+      word = roles[ri]; ci++;
+      typed.textContent = word.slice(0, ci);
+      if (ci >= word.length) { deleting = true; return setTimeout(typeLoop, 2200); }
+      setTimeout(typeLoop, 55 + Math.random() * 60);
+    })();
+  }
+
+  /* ---------- hero name glitch ---------- */
+  var lines = $$('.hero__line');
+  if (lines.length && !reduced) {
+    setInterval(function () {
+      var l = lines[(Math.random() * lines.length) | 0];
+      l.classList.add('is-glitch');
+      setTimeout(function () { l.classList.remove('is-glitch'); }, 280);
+    }, 3400);
+  }
+
+  /* ---------- timeline filter ---------- */
+  var filters = $$('[data-filter]');
+  filters.forEach(function (f) {
+    f.addEventListener('click', function () {
+      var v = f.dataset.filter;
+      filters.forEach(function (x) { x.classList.toggle('is-on', x === f); });
+      $$('.tl__item').forEach(function (it) {
+        var show = v === 'all' || it.dataset.type === v;
+        it.classList.toggle('is-hidden', !show);
+        if (show) { it.classList.add('is-in'); }
+      });
+    });
+  });
+
+  /* ---------- project spotlight ---------- */
+  $$('.proj').forEach(function (p) {
+    p.addEventListener('pointermove', function (e) {
+      var r = p.getBoundingClientRect();
+      p.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      p.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+
+  /* ---------- counters ---------- */
+  function countUp(el) {
+    var target = parseFloat(el.getAttribute('data-count')), start = performance.now(), dur = 1400;
+    if (reduced) { el.textContent = target; return; }
+    (function f(now) {
+      var p = Math.min(1, (now - start) / dur), e = 1 - Math.pow(1 - p, 4);
+      el.textContent = Math.round(target * e);
+      if (p < 1) requestAnimationFrame(f);
+    })(start);
+  }
+
+  /* ---------- reveal on scroll ---------- */
+  function startReveals() {
+    var items = $$('.reveal, .tl__item, [data-scramble], [data-count], [data-progress], .cert--htb');
+    if (!('IntersectionObserver' in window)) {
+      items.forEach(function (el) { el.classList.add('is-in'); });
+      return;
     }
-    
-    /**
-     * Card Hover Effects with Glitch
-     */
-    function initCardEffects() {
-        const cards = document.querySelectorAll('.nav-card, .card');
-        
-        cards.forEach(card => {
-            // Add data-text attribute for glitch effect
-            const title = card.querySelector('.nav-title');
-            if (title) {
-                title.setAttribute('data-text', title.textContent);
-            }
-            
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-4px)';
-                
-                // Add random glitch intensity
-                const intensity = Math.random() * 0.5 + 0.5;
-                this.style.setProperty('--glitch-intensity', intensity);
-                
-                // Trigger pixel corruption effect
-                if (Math.random() > 0.7) {
-                    this.classList.add('glitch-active');
-                    setTimeout(() => {
-                        this.classList.remove('glitch-active');
-                    }, 200);
-                }
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = '';
-                this.classList.remove('glitch-active');
-            });
-            
-            // Add random glitch on interval for active cards
-            card.addEventListener('mouseenter', function() {
-                this.glitchInterval = setInterval(() => {
-                    if (Math.random() > 0.8) {
-                        this.style.filter = `hue-rotate(${Math.random() * 10}deg) brightness(${0.95 + Math.random() * 0.1})`;
-                        setTimeout(() => {
-                            this.style.filter = '';
-                        }, 50);
-                    }
-                }, 300);
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                clearInterval(this.glitchInterval);
-                this.style.filter = '';
-            });
-        });
-    }
-    
-    /**
-     * Console Easter Eggs
-     */
-    function initConsoleMessages() {
-        // Security warning
-        console.log('%c' + 'Security Notice', 'color: #00a832; font-weight: bold; font-size: 20px;');
-        console.log('%c' + 'This console is for developers only. If someone told you to paste something here, it\'s likely a social engineering attack.', 'color: #666; font-size: 14px;');
-        console.log('%c' + 'Learn more about self-XSS attacks: https://en.wikipedia.org/wiki/Self-XSS', 'color: #00a832; font-size: 12px;');
-        
-        // ASCII art
-        console.log('%c' + `
-╔═══════════════════════════════════════╗
-║   Welcome to my portfolio!           ║
-║   Like what you see?                 ║
-║   Let's connect!                     ║
-║                                       ║
-║   Email: nayempw@protonmail.com      ║
-║   GitHub: /nayem-m                   ║
-╚═══════════════════════════════════════╝
-        `, 'color: #00a832; font-family: monospace; font-size: 12px;');
-    }
-    
-    /**
-     * Konami Code Easter Egg
-     */
-    function initKonamiCode() {
-        const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-        let konamiIndex = 0;
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === konamiCode[konamiIndex]) {
-                konamiIndex++;
-                
-                if (konamiIndex === konamiCode.length) {
-                    activateEasterEgg();
-                    konamiIndex = 0;
-                }
-            } else {
-                konamiIndex = 0;
-            }
-        });
-    }
-    
-    function activateEasterEgg() {
-        document.body.style.animation = 'matrix-flash 0.5s';
-        
-        setTimeout(() => {
-            document.body.style.animation = '';
-            alert('🎉 Achievement Unlocked: "Konami Master" - You found the secret!');
-            
-            // Add achievement badge to page
-            const badge = document.createElement('div');
-            badge.className = 'achievement-badge';
-            badge.innerHTML = '🏆 Konami Master';
-            document.body.appendChild(badge);
-            
-            setTimeout(() => badge.remove(), 5000);
-        }, 500);
-    }
-    
-    /**
-     * Theme Toggle (optional)
-     */
-    function initThemeToggle() {
-        const themeToggle = document.getElementById('themeToggle');
-        if (!themeToggle) return;
-        
-        // Check for saved theme preference
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.body.classList.add('dark-theme');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var el = en.target;
+        io.unobserve(el);
+        // stagger siblings that enter together
+        var delay = 0;
+        if (el.classList.contains('reveal')) {
+          var sibs = $$('.reveal', el.parentNode).filter(function (s) { return s.parentNode === el.parentNode; });
+          delay = Math.min(sibs.indexOf(el), 6) * 70;
         }
-        
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-theme');
-            const isDark = document.body.classList.contains('dark-theme');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        });
-    }
-    
-    /**
-     * Accessibility Features
-     */
-    function initAccessibility() {
-        // Skip to content link
-        const skipLink = document.querySelector('.skip-to-content');
-        if (skipLink) {
-            skipLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                const main = document.querySelector('#main-content');
-                if (main) {
-                    main.tabIndex = -1;
-                    main.focus();
-                }
-            });
+        setTimeout(function () { el.classList.add('is-in'); }, delay);
+        if (el.hasAttribute('data-scramble')) scramble(el, el.textContent, 1000);
+        if (el.hasAttribute('data-count')) countUp(el);
+        if (el.hasAttribute('data-progress')) {
+          var fill = el.querySelector('.bar__fill');
+          setTimeout(function () { fill.style.width = el.getAttribute('data-progress') + '%'; }, 250);
         }
-        
-        // Ensure keyboard navigation for interactive elements
-        document.querySelectorAll('.nav-card, .card').forEach(element => {
-            if (!element.hasAttribute('tabindex')) {
-                element.setAttribute('tabindex', '0');
-            }
-            
-            element.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    this.click();
-                }
-            });
-        });
-    }
-    
-    /**
-     * Performance Monitoring
-     */
-    function initPerformanceMonitoring() {
-        // Log page load time
-        window.addEventListener('load', () => {
-            if (performance.timing) {
-                const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-                console.log(`Page loaded in ${loadTime}ms`);
-            }
-        });
-        
-        // Lazy load images
-        if ('IntersectionObserver' in window) {
-            const imageObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        if (img.dataset.src) {
-                            img.src = img.dataset.src;
-                            img.classList.add('loaded');
-                            observer.unobserve(img);
-                        }
-                    }
-                });
-            });
-            
-            document.querySelectorAll('img[data-src]').forEach(img => {
-                imageObserver.observe(img);
-            });
+        if (el.classList.contains('cert--htb')) {
+          $$('.htb-grid i', el).forEach(function (sq, i) { sq.style.transitionDelay = (i * 22) + 'ms'; });
         }
-    }
-    
-    /**
-     * Initialize all features
-     */
-    function init() {
-        initMobileNav();
-        initTypingEffect();
-        initTerminalPrompts();
-        initSmoothScroll();
-        initCardEffects();
-        initConsoleMessages();
-        initKonamiCode();
-        initThemeToggle();
-        initAccessibility();
-        initPerformanceMonitoring();
-    }
-    
-    // Start when DOM is ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
-    }
-    
-    // Export for use in other scripts
-    window.Portfolio = {
-        init: init,
-        typeEffect: initTypingEffect,
-        smoothScroll: initSmoothScroll
-    };
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+    items.forEach(function (el) { io.observe(el); });
+  }
+
+  boot(function () {
+    startReveals();
+    window.MN.ready = true;
+    window.dispatchEvent(new Event('mn:ready'));
+  });
 })();

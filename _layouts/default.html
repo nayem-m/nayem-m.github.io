@@ -1,102 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="redteam">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
-    <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-    
-    <!-- SEO Meta Tags -->
-    <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
-    <meta property="og:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
-    
-    <!-- Professional Mono Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-    
-    <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
-    
-    <!-- Page Specific Styles -->
-    {% if page.custom_css %}
-        {% for stylesheet in page.custom_css %}
-            <link rel="stylesheet" href="{{ stylesheet | relative_url }}">
-        {% endfor %}
-    {% endif %}
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ '/assets/images/favicon.ico' | relative_url }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  {% capture page_title %}{% if page.title and page.url != '/' %}{{ page.title }} // {% endif %}{{ site.title }}{% endcapture %}
+  {% capture page_desc %}{% if page.description %}{{ page.description }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}{% endcapture %}
+  <title>{{ page_title | strip }}</title>
+  <meta name="description" content="{{ page_desc | strip | escape }}">
+  <meta name="theme-color" content="#0a0908">
+  <meta property="og:title" content="{{ page_title | strip | escape }}">
+  <meta property="og:description" content="{{ page_desc | strip | escape }}">
+  <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <link rel="alternate" type="application/atom+xml" title="{{ site.title }} // blog" href="{{ '/feed.xml' | relative_url }}">
+  <link rel="icon" type="image/svg+xml" href="{{ '/assets/img/favicon.svg' | relative_url }}">
+
+  <script>
+    // apply saved theme before paint
+    try { var t = localStorage.getItem('mn-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+    document.documentElement.classList.add('js');
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@200;300;500;800&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
 </head>
-<body class="{% if page.body_class %}{{ page.body_class }}{% endif %}">
-    <!-- Dynamic Matrix Grid Background -->
-    <div class="matrix-grid" id="matrixGrid"></div>
-    
-    <!-- Navigation Header (appears on all pages) -->
-    <nav class="site-nav">
-        <div class="nav-container">
-            <a href="{{ '/' | relative_url }}" class="nav-logo">
-                <span class="nav-prompt">$</span> {{ site.short_name | default: "moosa_nayem" }}
-            </a>
-            <div class="nav-links">
-                <a href="{{ '/' | relative_url }}" class="nav-link {% if page.url == '/' %}active{% endif %}">~/home</a>
-                <a href="{{ '/writeups' | relative_url }}" class="nav-link {% if page.url contains '/writeups' %}active{% endif %}">./writeups</a>
-                <a href="{{ '/projects' | relative_url }}" class="nav-link {% if page.url contains '/projects' %}active{% endif %}">&lt;/projects&gt;</a>
-                <a href="{{ '/blog' | relative_url }}" class="nav-link {% if page.url contains '/blog' %}active{% endif %}">#blog</a>
-                <a href="{{ '/about' | relative_url }}" class="nav-link {% if page.url == '/about/' %}active{% endif %}">$whoami</a>
-                <a href="{{ '/cv' | relative_url }}" class="nav-link {% if page.url == '/cv/' %}active{% endif %}">resume.pdf</a>
-            </div>
-            <button class="nav-toggle" id="navToggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </nav>
+<body class="{{ page.body_class }}">
+  <canvas class="bg-canvas" id="bgCanvas" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+  <a class="skip" href="#main">skip to content</a>
 
-    <!-- Main Content -->
-    <main class="site-content">
-        {{ content }}
-    </main>
+  <header class="topbar" id="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="{{ '/' | relative_url }}" aria-label="Moosa Nayem — home">
+        <span class="brand__mark">MN</span>
+        <span class="brand__path">nayem@bh<span class="dim">:</span><span class="acc">~</span><span class="dim">$</span><span class="caret"></span></span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary">
+        <a href="{{ '/#whoami' | relative_url }}" data-sec="whoami"><span class="nav__n">01</span>whoami</a>
+        <a href="{{ '/#timeline' | relative_url }}" data-sec="timeline"><span class="nav__n">02</span>timeline</a>
+        <a href="{{ '/#certs' | relative_url }}" data-sec="certs"><span class="nav__n">03</span>certs</a>
+        <a href="{{ '/#arsenal' | relative_url }}" data-sec="arsenal"><span class="nav__n">04</span>arsenal</a>
+        <a href="{{ '/#projects' | relative_url }}" data-sec="projects"><span class="nav__n">05</span>projects</a>
+        <a href="{{ '/#shell' | relative_url }}" data-sec="shell"><span class="nav__n">06</span>shell</a>
+        <a href="{{ '/blog/' | relative_url }}" data-sec="blog" class="{% if page.url contains '/blog' %}is-active{% endif %}"><span class="nav__n">07</span>blog</a>
+        <a href="{{ '/#contact' | relative_url }}" data-sec="contact" class="nav__cta">contact</a>
+      </nav>
+      <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span>
+      </button>
+    </div>
+    <div class="statusbar" aria-hidden="true">
+      <span><i class="dot"></i>online</span>
+      <span class="hide-sm">loc 26.22°N 50.58°E</span>
+      <span class="hide-sm">role cbb.gp15</span>
+      <span>bh <b id="clock">--:--:--</b></span>
+    </div>
+  </header>
 
-    <!-- Footer (appears on all pages) -->
-    <footer class="site-footer">
-        <div class="footer-container">
-            <div class="footer-content">
-                <p>© {{ 'now' | date: '%Y' }} {{ site.author.name }} • {{ site.tagline }}</p>
-                <div class="footer-command">$ echo "{{ site.motto | default: 'Securing the digital future, one vulnerability at a time' }}"</div>
-            </div>
-            <div class="footer-links">
-                <a href="mailto:{{ site.author.email }}" class="footer-link">Email</a>
-                <a href="https://github.com/{{ site.github_username }}" class="footer-link">GitHub</a>
-                <a href="https://linkedin.com/in/{{ site.linkedin_username }}" class="footer-link">LinkedIn</a>
-                {% if site.twitter_username %}
-                <a href="https://twitter.com/{{ site.twitter_username }}" class="footer-link">Twitter</a>
-                {% endif %}
-            </div>
-        </div>
-    </footer>
+  <main id="main" class="main">
+    {{ content }}
+  </main>
 
-    <!-- Core JavaScript -->
-    <script src="{{ '/assets/js/matrix-grid.js' | relative_url }}"></script>
-    <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
-    
-    <!-- Page Specific Scripts -->
-    {% if page.custom_js %}
-        {% for script in page.custom_js %}
-            <script src="{{ script | relative_url }}"></script>
-        {% endfor %}
-    {% endif %}
-    
-    <!-- Analytics (if configured) -->
-    {% if site.google_analytics %}
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', '{{ site.google_analytics }}');
-    </script>
-    {% endif %}
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <div class="footer__big" aria-hidden="true">NAYEM<span class="acc">_</span></div>
+      <div class="footer__row">
+        <span>© {{ site.time | date: '%Y' }} Moosa Nayem</span>
+        <span class="dim">hand-built in Manama, Bahrain</span>
+        <span class="dim">session uptime <b id="uptime">00:00:00</b></span>
+      </div>
+      <div class="footer__row footer__links">
+        <a href="mailto:{{ site.author.email }}">email</a>
+        <a href="https://github.com/{{ site.social.github }}" target="_blank" rel="noopener">github</a>
+        <a href="https://www.linkedin.com/in/{{ site.social.linkedin }}" target="_blank" rel="noopener">linkedin</a>
+        <a href="{{ '/blog/' | relative_url }}">blog</a>
+        <a href="{{ '/feed.xml' | relative_url }}">rss</a>
+        <button class="theme-cycle" id="themeCycle" type="button" title="Cycle colour theme">theme: <b id="themeName">redteam</b></button>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    window.SITE = {
+      email: {{ site.author.email | jsonify }},
+      github: {{ site.social.github | jsonify }},
+      linkedin: {{ site.social.linkedin | jsonify }},
+      htb: {{ site.social.htb | jsonify }},
+      timeline: {{ site.data.timeline | jsonify }},
+      certs: {{ site.data.certs | jsonify }},
+      projects: {{ site.data.projects | jsonify }},
+      skills: {{ site.data.skills | jsonify }},
+      posts: [{% for post in site.posts limit: 10 %}{"title": {{ post.title | jsonify }}, "url": {{ post.url | relative_url | jsonify }}, "date": {{ post.date | date: '%Y-%m-%d' | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}],
+      base: {{ site.baseurl | jsonify }}
+    };
+  </script>
+  <script src="{{ '/assets/js/bg.js' | relative_url }}" defer></script>
+  <script src="{{ '/assets/js/main.js' | relative_url }}" defer></script>
+  {% if page.scripts %}{% for s in page.scripts %}<script src="{{ s | relative_url }}" defer></script>
+  {% endfor %}{% endif %}
 </body>
 </html>

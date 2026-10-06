@@ -1,0 +1,49 @@
+---
+layout: default
+title: Blog
+description: Writeups, HTB boxes, web vulnerabilities and lessons from the field by Moosa Nayem.
+---
+
+<section class="wrap page-head">
+  <a class="back" href="{{ '/' | relative_url }}">← cd ~</a>
+  <header class="sec__head" style="margin-top:28px">
+    <span class="sec__idx">~/blog</span><span class="sec__cmd">$ ls -lt ~/blog/posts</span>
+    <h1 class="sec__title" data-scramble>Blog</h1>
+  </header>
+  <p class="page-head__lede">
+    Writeups, Hack The Box machines, web vulnerabilities and notes from real engagements (sanitised, obviously).
+    Subscribe via <a class="acc" href="{{ '/feed.xml' | relative_url }}">rss</a>.
+  </p>
+</section>
+
+<section class="wrap page-body">
+  {% if site.posts.size > 0 %}
+  <ul class="ls">
+    {% for post in site.posts %}
+    <li><a href="{{ post.url | relative_url }}">
+      <span class="ls__perm hide-sm">-rw-r--r--</span>
+      <span class="ls__date">{{ post.date | date: '%Y-%m-%d' }}</span>
+      <span class="ls__title">{{ post.title }}</span>
+      <span class="ls__go">↗</span>
+      {% if post.tags.size > 0 %}<span class="ls__tags tags">{% for t in post.tags %}<span class="tag">{{ t }}</span>{% endfor %}</span>{% endif %}
+    </a></li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="empty">
+    <pre class="empty__out"><span class="dim">$ ls -la ~/blog/posts</span>
+total 0
+drwxr-xr-x  2 moosa  staff   64 {{ site.time | date: '%b %e' }}  .
+drwxr-xr-x  8 moosa  staff  256 {{ site.time | date: '%b %e' }}  ..
+
+<span class="dim">$ cat ~/blog/queue.txt</span>
+[ ] HTB machine writeups
+[ ] web exploitation notes: SQLi, BOLA, file upload
+[ ] eJPT: how I prepared
+[ ] the road to OSCP
+
+<span class="acc">// first post compiling…</span><span class="caret"></span></pre>
+    <a class="btn" href="{{ '/' | relative_url }}"><span>back home</span><i>←</i></a>
+  </div>
+  {% endif %}
+</section>

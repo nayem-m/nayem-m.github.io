@@ -1,0 +1,23 @@
+- group: offensive
+  label: Offensive Security
+  items: [Web App Pentesting, Infrastructure Pentesting, API Security, OWASP Top 10, Manual Exploitation, Privilege Escalation, Vulnerability Assessment]
+
+- group: tooling
+  label: Tooling
+  items: [Burp Suite, Nmap, Metasploit, sqlmap, ffuf, Gobuster, Wireshark, Nessus, OpenVAS]
+
+- group: reporting
+  label: Reporting
+  items: [Client Reports, Repro Steps, CVSS Scoring, Prioritised Remediation, Non-technical Briefings]
+
+- group: defence
+  label: Defence & Forensics
+  items: [GoPhish, MITRE ATT&CK, Incident Response, Autopsy, FTK Imager, Volatility]
+
+- group: code
+  label: Code & Automation
+  items: [Python, Bash, C, SQL, JavaScript, Svelte, Git, CI]
+
+- group: systems
+  label: Systems & Networking
+  items: [Kali, Arch Linux, Windows, Active Directory, TCP/IP, VirtualBox, VMware]
