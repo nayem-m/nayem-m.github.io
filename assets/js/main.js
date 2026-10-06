@@ -62,13 +62,16 @@
       ['[  0.004219] ', 'cpu0: caffeine-driven core detected, 1 thread, unlimited curiosity'],
       ['[  0.031337] ', 'mounting /home/moosa ', 'ok'],
       ['[  0.069420] ', 'loading modules: burp nmap sqlmap ffuf metasploit ', 'ok'],
-      ['[  0.112003] ', 'cert/ejpt ', 'verified'],
-      ['[  0.140188] ', 'cert/cwes ', '88%'],
-      ['[  0.171512] ', 'cert/oscp ', 'in progress'],
       ['[  0.203001] ', 'job: central-bank-of-bahrain/gp15 ', 'active'],
       ['[  0.240000] ', 'establishing session with visitor ', 'ok'],
       ['', '> access granted. welcome.']
     ];
+    // one line per cert, straight from _data/certs.yml
+    var certs = (window.SITE && window.SITE.certs) || [];
+    certs.slice().reverse().forEach(function (c, k) {
+      var st = c.status === 'done' ? 'verified' : c.status === 'progress' ? c.progress + '%' : 'queued';
+      lines.splice(4, 0, ['[  0.1' + String(80 - k * 9).padStart(2, '0') + '337] ', 'cert/' + c.id + ' ', st]);
+    });
     var el = document.createElement('div');
     el.className = 'boot';
     el.setAttribute('aria-hidden', 'true');
@@ -258,10 +261,11 @@
   /* ---------- counters ---------- */
   function countUp(el) {
     var target = parseFloat(el.getAttribute('data-count')), start = performance.now(), dur = 1400;
-    if (reduced) { el.textContent = target; return; }
+    var dec = parseInt(el.getAttribute('data-decimals') || '0', 10);
+    if (reduced) { el.textContent = target.toFixed(dec); return; }
     (function f(now) {
       var p = Math.min(1, (now - start) / dur), e = 1 - Math.pow(1 - p, 4);
-      el.textContent = Math.round(target * e);
+      el.textContent = (target * e).toFixed(dec);
       if (p < 1) requestAnimationFrame(f);
     })(start);
   }

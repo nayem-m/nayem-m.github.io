@@ -376,13 +376,16 @@ body::after {
 @keyframes loading { 0% { left: -30%; } 100% { left: 100%; } }
 .cert__pct { display: flex; justify-content: space-between; margin-top: 8px; font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--mute); }
 .cert__pct b { color: var(--ink); font-weight: 500; }
-.htb-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; }
+.cert--htb { grid-column: span 2; }
+.htb-grid { display: grid; grid-template-columns: repeat(18, 1fr); gap: 3px; }
 .htb-grid i { aspect-ratio: 1; background: rgba(var(--acc-rgb), .85); opacity: 0; transform: scale(.4); transition: opacity .3s, transform .3s; }
 .cert.is-in .htb-grid i { opacity: 1; transform: none; }
 
 /* arsenal */
 .arsenal { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
 .arsenal__group { background: var(--bg); padding: 20px; }
+/* stretch a lone last group so the grid has no empty cell */
+.arsenal__group:last-child:nth-child(3n+2) { grid-column: span 2; }
 .arsenal__head { font-size: 12.5px; margin-bottom: 14px; }
 .arsenal__list { display: flex; flex-wrap: wrap; gap: 6px; }
 .arsenal__list li {
@@ -572,6 +575,8 @@ a.proj:hover .proj__go { transform: translate(3px, -3px); color: var(--acc); }
   .certs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .projects { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .arsenal { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .arsenal__group:last-child:nth-child(3n+2) { grid-column: auto; }
+  .arsenal__group:last-child:nth-child(odd) { grid-column: span 2; }
 }
 
 @media (max-width: 920px) {
@@ -615,6 +620,7 @@ a.proj:hover .proj__go { transform: translate(3px, -3px); color: var(--acc); }
   .sec__head { grid-template-columns: auto 1fr; }
   .sec__cmd { font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
   .stats, .certs, .projects, .arsenal { grid-template-columns: 1fr; }
+  .cert--htb, .arsenal__group:last-child:nth-child(odd) { grid-column: auto; }
   .stats { grid-template-columns: 1fr 1fr; }
   .tl__card { padding: 16px; }
   .tl__card:hover { transform: none; }

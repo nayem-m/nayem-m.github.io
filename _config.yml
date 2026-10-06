@@ -15,7 +15,12 @@ author:
 social:
   github: nayem-m
   linkedin: moosa-nayem-540784334
-  htb: seanporter
+
+# Hack The Box profile: update the level here and it changes everywhere
+htb:
+  handle: seanporter
+  level: 53
+  rank: Skilled
 
 markdown: kramdown
 kramdown:

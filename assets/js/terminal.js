@@ -11,6 +11,7 @@
 
   var S = window.SITE || {};
   var MN = window.MN || {};
+  var htb = S.htb || { handle: 'seanporter', level: '?', rank: 'Skilled' };
   var history = [], hIdx = 0;
 
   /* ---------- output helpers (DOM only, never innerHTML with user input) ---------- */
@@ -120,7 +121,7 @@
       var bar = c.status === 'queued' ? '[' + '▒'.repeat(4) + '·'.repeat(n - 4) + '] loading…' : '[' + '█'.repeat(f) + '·'.repeat(n - f) + '] ' + pct + '%';
       line(frag(span(c.name.padEnd(6), 't-acc'), span(' ' + bar + '  ', 't-hi'), c.full + ' (' + c.issuer + ')'));
     });
-    line(frag(span('HTB   ', 't-acc'), span(' rank: skilled · level 40 · handle: ' + (S.htb || 'seanporter'), 't-hi')));
+    line(frag(span('HTB   ', 't-acc'), span(' rank: ' + htb.rank.toLowerCase() + ' · level ' + htb.level + ' · handle: ' + htb.handle, 't-hi')));
   };
 
   C.skills = function () {
@@ -235,7 +236,7 @@
         ['22/tcp    open   curiosity', 't-out'],
         ['80/tcp    open   web-app-testing', 't-out'],
         ['443/tcp   open   api-security', 't-out'],
-        ['1337/tcp  open   htb-grind (level 40)', 't-out'],
+        ['1337/tcp  open   htb-grind (level ' + htb.level + ')', 't-out'],
         ['8080/tcp  open   opportunities', 't-acc'],
         ['31337/tcp filtered oscp (in progress)', 't-out'],
         ['', 't-out'],

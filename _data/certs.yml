@@ -7,13 +7,29 @@
   progress: 100
   note: Certified. Practical, hands-on network and web pentest exam.
 
-- id: cwes
-  name: CWES
-  full: Certified Web Exploitation Specialist
+- id: cjca
+  name: CJCA
+  full: HTB Certified Junior Cybersecurity Associate
   issuer: Hack The Box
   status: progress
-  progress: 88
+  progress: 96.5
+  note: Offensive and defensive foundations, from exploitation to SIEM monitoring and log analysis.
+
+- id: cwes
+  name: CWES
+  full: HTB Certified Web Exploitation Specialist
+  issuer: Hack The Box
+  status: progress
+  progress: 88.5
   note: SQLi, XSS, file upload, command injection and API testing.
+
+- id: cpts
+  name: CPTS
+  full: HTB Certified Penetration Testing Specialist
+  issuer: Hack The Box
+  status: progress
+  progress: 41.6
+  note: Full-scope penetration testing, including Active Directory and pivoting.
 
 - id: oscp
   name: OSCP
@@ -21,3 +37,10 @@
   issuer: OffSec
   status: queued
   note: Currently in preparation. The next boss fight.
+
+- id: coae
+  name: COAE
+  full: HTB Certified Offensive AI Expert
+  issuer: Hack The Box
+  status: queued
+  note: AI red teaming, covering LLM exploitation, adversarial ML and data poisoning.

@@ -14,10 +14,6 @@
   label: Defence & Forensics
   items: [GoPhish, MITRE ATT&CK, Incident Response, Autopsy, FTK Imager, Volatility]
 
-- group: code
-  label: Code & Automation
-  items: [Python, Bash, C, SQL, JavaScript, Svelte, Git, CI]
-
 - group: systems
   label: Systems & Networking
   items: [Kali, Arch Linux, Windows, Active Directory, TCP/IP, VirtualBox, VMware]

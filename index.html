@@ -71,8 +71,9 @@ scripts:
     <span>eJPT certified</span><i>✦</i>
     <span>CBB GP15 — 1 of 15</span><i>✦</i>
     <span>First-Class Honours · 90%</span><i>✦</i>
-    <span>HTB rank: skilled · lvl 40</span><i>✦</i>
-    <span>CWES 88%</span><i>✦</i>
+    <span>HTB lvl {{ site.htb.level }}</span><i>✦</i>
+    {% for c in site.data.certs %}{% if c.status == 'progress' %}<span>{{ c.name }} {{ c.progress }}%</span><i>✦</i>
+    {% endif %}{% endfor %}
     <span>OSCP: loading<b class="blink">_</b></span><i>✦</i>
     <span>ex-Vulnxperts pentester</span><i>✦</i>
     <span>NEBRC ethical hacker</span><i>✦</i>
@@ -104,7 +105,7 @@ scripts:
       </p>
       <ul class="facts">
         <li><span class="facts__k">lang</span>Arabic (native) · English (IELTS 8.0)</li>
-        <li><span class="facts__k">htb</span>seanporter · Skilled · Level 40</li>
+        <li><span class="facts__k">htb</span>{{ site.htb.handle }} · {{ site.htb.rank }} · Level {{ site.htb.level }}</li>
         <li><span class="facts__k">now</span>Graduate Trainee, Central Bank of Bahrain</li>
         <li><span class="facts__k">next</span>OSCP</li>
       </ul>
@@ -120,12 +121,12 @@ scripts:
         <div class="stat__label">GP15 selection<br><span class="dim">under 1% acceptance</span></div>
       </div>
       <div class="stat reveal">
-        <div class="stat__num"><small>lvl</small><span data-count="40">0</span></div>
-        <div class="stat__label">Hack The Box<br><span class="dim">rank: skilled</span></div>
+        <div class="stat__num"><small>lvl</small><span data-count="{{ site.htb.level }}">0</span></div>
+        <div class="stat__label">Hack The Box<br><span class="dim">rank: {{ site.htb.rank | downcase }}</span></div>
       </div>
       <div class="stat reveal">
-        <div class="stat__num"><span data-count="88">0</span><small>%</small></div>
-        <div class="stat__label">HTB CWES<br><span class="dim">progress, in flight</span></div>
+        <div class="stat__num"><span data-count="96.5" data-decimals="1">0</span><small>%</small></div>
+        <div class="stat__label">HTB CJCA<br><span class="dim">almost certified</span></div>
       </div>
     </div>
   </div>
@@ -201,10 +202,10 @@ scripts:
         <span class="cert__issuer">Hack The Box</span>
         <span class="cert__badge">[ track record ]</span>
       </div>
-      <div class="cert__name">LVL 40</div>
-      <div class="cert__full">Rank: Skilled // handle: seanporter</div>
+      <div class="cert__name">LVL {{ site.htb.level }}</div>
+      <div class="cert__full">Rank: {{ site.htb.rank }} // handle: {{ site.htb.handle }}</div>
       <p class="cert__note">Boxes, Academy modules and a lot of late nights. The training ground for everything above.</p>
-      <div class="htb-grid" aria-hidden="true">{% for i in (1..40) %}<i></i>{% endfor %}</div>
+      <div class="htb-grid" aria-hidden="true">{% for i in (1..site.htb.level) %}<i></i>{% endfor %}</div>
     </article>
   </div>
 </section>
