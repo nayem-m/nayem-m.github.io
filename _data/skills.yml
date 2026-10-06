@@ -4,7 +4,11 @@
 
 - group: tooling
   label: Tooling
-  items: [Burp Suite, Nmap, Metasploit, sqlmap, ffuf, Gobuster, Wireshark, Nessus, OpenVAS]
+  items: [Burp Suite, Caido, Nmap, Metasploit, sqlmap, ffuf, Gobuster, Wireshark, Nessus, OpenVAS]
+
+- group: ai
+  label: AI-Assisted Offense
+  items: [AI Agents, AI Agents for Pentesting]
 
 - group: reporting
   label: Reporting
